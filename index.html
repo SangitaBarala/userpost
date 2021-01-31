@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Index Page</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+
+	var users = []
+	var posts = []
+	$(document).ready(function(){
+		
+		axios.get("https://jsonplaceholder.typicode.com/posts")
+		.then(response => {
+			posts = response.data
+		})
+		
+		axios.get("https://jsonplaceholder.typicode.com/users")
+		.then(response => {
+			users = response.data
+			for(var i=0; i<users.length; i++)
+			{
+				var totalPost = 0
+				for(var j=0; j<posts.length; j++)
+				{
+					if(posts[j].userId == users[i].id)
+					{
+					totalPost++
+					}
+				}
+				
+				$(".table").append
+				(`
+					<tr>
+						<td><a target="_blank" href="profile.html?id=${users[i].id}">${users[i].name}</a></td>
+						<td>${users[i].email}</td>
+						<td>${totalPost}</td>
+					</tr>
+				`)
+			}
+		})
+	})
+ 
+</script>
+</head>
+<body>
+	<h2 style="text-align:center; margin-bottom:20px;">List of users</h2>
+	<table class="table">
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>No. of Posts</th>
+		</tr>
+	</table>
+</body>
+</html>
